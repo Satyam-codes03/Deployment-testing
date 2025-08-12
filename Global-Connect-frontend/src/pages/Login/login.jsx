@@ -17,7 +17,7 @@ const Login = (props) => {
         if (loginField.email.trim().length === 0 || loginField.password.trim().length === 0) {
             return toast.error("Please fill all credentials")
         }
-        await axios.post('http://localhost:4000/api/auth/login',loginField,{withCredentials:true}).then((res) => {
+        await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/auth/login`,loginField,{withCredentials:true}).then((res) => {
            props.changeLoginValue(true);
            localStorage.setItem('isLogin', 'true');
            localStorage.setItem("userInfo", JSON.stringify(res.data.userExist));
