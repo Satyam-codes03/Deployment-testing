@@ -24,8 +24,8 @@ const Feeds = () => {
       setLoading(true); // Set loading to true at start
       
       const [userData, postData] = await Promise.all([
-        axios.get('http://localhost:4000/api/auth/self', { withCredentials: true }),
-        axios.get('http://localhost:4000/api/post/getAllPost')
+        axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/auth/self`, { withCredentials: true }),
+        axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/post/getAllPost`)
       ]);
       
       // FIXED: This was the main bug - you wrote personalData.data.user instead of userData.data.user
