@@ -29,7 +29,7 @@ const Post = ({ profile, item, personalData }) => {
         if (commentText.trim().length === 0) return toast.error("Please enter comment");
 
         try {
-            const response = await axios.post(`http://localhost:4000/api/comment`, 
+            const response = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/comment`, 
                 { postId: item?._id, comment: commentText },
                 { withCredentials: true }
             );
@@ -47,7 +47,7 @@ const Post = ({ profile, item, personalData }) => {
 
     const handleLikeFunc = async () => {
         try {
-            await axios.post('http://localhost:4000/api/post/likeDislike', 
+            await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/post/likeDislike`, 
                 { postId: item?._id }, 
                 { withCredentials: true }
             );
@@ -70,7 +70,7 @@ const Post = ({ profile, item, personalData }) => {
         if (!comment) {
             setComment(true);
             try {
-                const response = await axios.get(`http://localhost:4000/api/comment/${item?._id}`);
+                const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/comment/${item?._id}`);
                 setComments(response.data.comments);
             } catch (err) {
                 console.error("Fetch comments error:", err);
@@ -85,7 +85,7 @@ const Post = ({ profile, item, personalData }) => {
     // Add this debug function to your Post component
 const copyToClipboard = async () => {
     try {
-        let string = `http://localhost:5173/profile/${item?.user?._id}/activities/${item?._id}`
+        let string = `${import.meta.env.VITE_FRONTEND_URL}/profile/${item?.user?._id}/activities/${item?._id}`
         
         // DEBUG: Log what we're copying
         console.log('=== COPY TO CLIPBOARD DEBUG ===');
