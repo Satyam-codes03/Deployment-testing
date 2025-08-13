@@ -15,7 +15,7 @@ app.use(express.json());
 app.use(cookieParser());
 app.use(cors({
   credentials: true,
-  origin: 'https://deployment-testing-chi.vercel.app/'
+  origin: "https://deployment-testing-chi.vercel.app"
   
 }));
 
