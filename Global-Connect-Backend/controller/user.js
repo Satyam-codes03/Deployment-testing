@@ -89,7 +89,7 @@ exports.loginThroghGmail = async (req, res) => {
 
         let jwttoken = jwt.sign({ userId: userExist._id }, process.env.JWT_PRIVATE_KEY);
         res.cookie('token', jwttoken, cookieOptions);
-        return res.status(200).json({ user: userExist,jwttoken });
+        return res.status(200).json({ user: userExist});
 
     } catch (err) {
         console.error(err);
