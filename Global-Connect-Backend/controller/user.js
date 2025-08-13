@@ -14,27 +14,63 @@ const cookieOptions = {
 };
 
 
+// exports.register = async (req, res) => {
+//     try {
+//         let { email, password, f_name } = req.body;
+//         let isUserExist = await User.findOne({ email });
+//         if(isUserExist){
+//            return res.status(500).json({ error: 'Already have account with this email. try with another account '});
+//         }
+
+//         const hashedPassword =await bcryptjs.hash(password,12);
+//         console.log(hashedPassword);
+        
+//         const newUser = new User({email,password:hashedPassword,f_name});
+//         await newUser.save();
+
+//         return res.status(201).json({ message: 'User registered successfully', success: "yes", data: newUser });
+
+//     } catch (err) {
+//         console.error(err);
+//         res.status(500).json({ error: 'Server error', message: err.message });
+//     }
+// }
+
 exports.register = async (req, res) => {
     try {
         let { email, password, f_name } = req.body;
         let isUserExist = await User.findOne({ email });
-        if(isUserExist){
-           return res.status(500).json({ error: 'Already have account with this email. try with another account '});
+        if (isUserExist) {
+            return res.status(500).json({ error: 'Already have account with this email. Try with another account.' });
         }
 
-        const hashedPassword =await bcryptjs.hash(password,12);
-        console.log(hashedPassword);
+        const hashedPassword = await bcryptjs.hash(password, 12);
         
-        const newUser = new User({email,password:hashedPassword,f_name});
+        const newUser = new User({ email, password: hashedPassword, f_name });
         await newUser.save();
 
-        return res.status(201).json({ message: 'User registered successfully', success: "yes", data: newUser });
+        // Create JWT token
+        const token = jwt.sign(
+            { userId: newUser._id },
+            process.env.JWT_PRIVATE_KEY,
+            { expiresIn: '7d' } // optional expiration
+        );
+
+        // Send token in cookie
+        res.cookie("token", token, cookieOptions);
+
+        return res.status(201).json({
+            message: 'User registered successfully',
+            success: "yes",
+            user: newUser
+        });
 
     } catch (err) {
         console.error(err);
         res.status(500).json({ error: 'Server error', message: err.message });
     }
-}
+};
+
 
 
 exports.login = async (req, res) => {
@@ -50,7 +86,7 @@ exports.login = async (req, res) => {
         if (userExist && await bcryptjs.compare(password, userExist.password)) {
             let token =jwt.sign({userId:userExist._id},process.env.JWT_PRIVATE_KEY)
            
-            res.cookie('token',token,cookieOptions) 
+            res.cookie("token", token, cookieOptions) 
             return res.json({message:'Logged In Successfully',success:"true",userExist})
            
         } else {

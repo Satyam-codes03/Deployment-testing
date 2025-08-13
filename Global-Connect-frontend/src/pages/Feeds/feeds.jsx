@@ -22,15 +22,21 @@ const Feeds = () => {
   const fetchData = async () => {
     try {
       setLoading(true); // Set loading to true at start
-      
+
+      // const [userData, postData] = await Promise.all([
+      //   axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/auth/self`, { withCredentials: true }),
+      //   axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/post/getAllPost`)
+      // ]);
+
       const [userData, postData] = await Promise.all([
         axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/auth/self`, { withCredentials: true }),
-        axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/post/getAllPost`)
+        axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/post/getAllPost`, { withCredentials: true })
       ]);
-      
+
+
       // FIXED: This was the main bug - you wrote personalData.data.user instead of userData.data.user
       setPersonalData(userData.data.user); // CORRECTED
-      localStorage.setItem('userInfo', JSON.stringify(userData.data.user));  
+      localStorage.setItem('userInfo', JSON.stringify(userData.data.user));
       setPost(postData.data.posts);
 
       console.log('Personal Data:', userData.data.user); // Debug log
@@ -86,7 +92,7 @@ const Feeds = () => {
       {/* middle side */}
       <div className='w-[100%] py-5 sm:w-[50%] '>
 
-        {/* Post Section */}        
+        {/* Post Section */}
         <div>
           <Card padding={1}>
             <div className='flex gap-3 items-center'>
@@ -96,19 +102,19 @@ const Feeds = () => {
 
             <div className='w-full flex mt-3 '>
               <div onClick={() => setAddPostModal(true)} className='flex gap-2 p-2 cursor-pointer justify-center rounded-lg w-[33%] hover:bg-gray-100' >
-                <VideoCallIcon sx={{color:"blue"}} className='text-blue-900' />
+                <VideoCallIcon sx={{ color: "blue" }} className='text-blue-900' />
                 Video
               </div>
               <div onClick={() => setAddPostModal(true)} className='flex gap-2 p-2 cursor-pointer justify-center rounded-lg w-[33%] hover:bg-gray-100'>
-                <InsertPhotoIcon sx={{color:"green"}} className='text-green-600' />
+                <InsertPhotoIcon sx={{ color: "green" }} className='text-green-600' />
                 Photo
               </div>
               <div onClick={() => setAddPostModal(true)} className='flex gap-2 p-2 cursor-pointer justify-center rounded-lg w-[33%] hover:bg-gray-100'>
-                <ArticleIcon sx={{color:"red"}} className='text-red-600' />
+                <ArticleIcon sx={{ color: "red" }} className='text-red-600' />
                 Article
               </div>
             </div>
-          </Card> 
+          </Card>
         </div>
 
         <div className="border-b-1 border-gray-400 w-[100%] my-5" />
