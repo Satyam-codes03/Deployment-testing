@@ -8,8 +8,8 @@ const NotificationModel = require('../models/notification');
 
 const cookieOptions = {
     httpOnly: true,
-    secure: false, // Set to true in production
-    sameSite: 'Lax' // set None in production
+    secure: true,
+    sameSite: 'None'
 
 };
 
